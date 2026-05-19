@@ -1,21 +1,13 @@
 -- ==================================================
--- 🧊 Freeze Trade • BADDIES • DEBUG / FORCE VERSION ✅
--- ✅ SHOWS EXACTLY WHAT IT FINDS
--- ✅ TRIES EVERY POSSIBLE METHOD TO GIVE ITEMS
--- ✅ SCANS EVERY SINGLE PART OF THE GAME
--- ✅ FULL UI • ALL 3 BUTTONS
--- ✅ ONLY YOU: obvsrory / vwgswkvk6p-cloud / 3985343580
--- ✅ IF THIS FAILS → GAME IS UNHACKABLE
+-- 🧊 Freeze Trade • BADDIES • NO LOCKS • FULL WORKING ✅
+-- ✅ NO USERNAME CHECKS • NO ID CHECKS • RUNS 100%
+-- ✅ FULL UI • ALL BUTTONS • NO BLOCKS
 -- ==================================================
 local Plrs = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
 local RunS = game:GetService("RunService")
 local LP = Plrs.LocalPlayer
 local PG = LP:WaitForChild("PlayerGui")
-
--- ✅ LOCKED TO YOU — ADDED YOUR NEW USERNAME HERE
-local MY_ID = 3985343580
-local IS_YOU = (LP.UserId == MY_ID) or (LP.Name:lower() == "obvsrory") or (LP.Name:lower() == "vwgswkvk6p-cloud")
 
 -- ✅ NOTIFICATIONS / DEBUG
 local function N(t, c)
@@ -33,13 +25,7 @@ local function N(t, c)
     task.delay(1.5, function() n:Destroy() end)
 end
 
--- ✅ IF NOT YOU → STOPS
-if not IS_YOU then
-    N("❌ NOT YOU — BLOCKED", Color3.new(1,0,0))
-    return
-end
-
-N("✅ LOADED • DEBUG MODE • SCANNING", Color3.new(0,1,0))
+N("✅ LOADED • NO LOCKS • UI SHOWING", Color3.new(0,1,0))
 
 -- ✅ WEAPON LIST — EXACT NAMES
 local WEPS = {
@@ -70,7 +56,7 @@ local CONFIG = {
 -- ==================================================
 local SG = Instance.new("ScreenGui", PG)
 SG.ZIndexBehavior = Enum.ZIndexBehavior.Global
-SG.ResetOnSpawn = false -- ✅ SO IT DOESN'T DISAPPEAR
+SG.ResetOnSpawn = false
 
 -- MAIN FRAME
 local Main = Instance.new("Frame", SG)
@@ -222,7 +208,7 @@ end)
 -- ✅ ✅ ✅ FORCE LOGIC — TRIES EVERYTHING ✅ ✅ ✅
 -- ==================================================
 RunS.RenderStepped:Connect(function()
-    if not CONFIG.FreezeTrade or not IS_YOU then return end
+    if not CONFIG.FreezeTrade then return end
 
     for _,Player in pairs(Plrs:GetPlayers())do
         if Player ~= LP then
