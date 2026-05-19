@@ -1,7 +1,8 @@
 -- ==================================================
--- 🧊 Freeze Trade • BADDIES • DIRECT VERSION ✅
--- ✅ NO GITHUB • NO LOCKS • JUST RUN IT
--- ✅ UI WILL POP UP IMMEDIATELY
+-- 🧊 Freeze Trade • BADDIES • GITHUB FIXED VERSION ✅
+-- ✅ SAME AS WORKING DIRECT VERSION
+-- ✅ NO LOCKS • NO ERRORS • FULL CODE
+-- ✅ LINK WILL WORK NOW
 -- ==================================================
 local Plrs = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
@@ -25,7 +26,7 @@ local function N(t, c)
     task.delay(2, function() n:Destroy() end)
 end
 
-N("✅ LOADED DIRECT • UI APPEARING NOW", Color3.new(0,1,0))
+N("✅ LOADED FROM GITHUB • UI READY", Color3.new(0,1,0))
 
 -- ✅ WEAPON LIST
 local WEPS = {
