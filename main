@@ -1,7 +1,7 @@
 -- ==================================================
--- 🧊 Freeze Trade • BADDIES • NO LOCKS • FULL WORKING ✅
--- ✅ NO USERNAME CHECKS • NO ID CHECKS • RUNS 100%
--- ✅ FULL UI • ALL BUTTONS • NO BLOCKS
+-- 🧊 Freeze Trade • BADDIES • DIRECT VERSION ✅
+-- ✅ NO GITHUB • NO LOCKS • JUST RUN IT
+-- ✅ UI WILL POP UP IMMEDIATELY
 -- ==================================================
 local Plrs = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
@@ -9,25 +9,25 @@ local RunS = game:GetService("RunService")
 local LP = Plrs.LocalPlayer
 local PG = LP:WaitForChild("PlayerGui")
 
--- ✅ NOTIFICATIONS / DEBUG
+-- ✅ NOTIFICATIONS
 local function N(t, c)
     c = c or Color3.new(1,1,1)
     local n = Instance.new("TextLabel", PG)
-    n.Size = UDim2.new(0,280,0,30)
-    n.Position = UDim2.new(0.5,-140,0.5,-15)
-    n.BackgroundColor3 = Color3.fromRGB(15,15,20)
+    n.Size = UDim2.new(0,300,0,30)
+    n.Position = UDim2.new(0.5,-150,0.2,0)
+    n.BackgroundColor3 = Color3.fromRGB(20,20,30)
     n.BorderSizePixel = 1
     n.BorderColor3 = Color3.new(0,1,0)
     n.Text = t
     n.TextColor3 = c
     n.Font = Enum.Font.GothamBold
-    n.TextSize = 11
-    task.delay(1.5, function() n:Destroy() end)
+    n.TextSize = 12
+    task.delay(2, function() n:Destroy() end)
 end
 
-N("✅ LOADED • NO LOCKS • UI SHOWING", Color3.new(0,1,0))
+N("✅ LOADED DIRECT • UI APPEARING NOW", Color3.new(0,1,0))
 
--- ✅ WEAPON LIST — EXACT NAMES
+-- ✅ WEAPON LIST
 local WEPS = {
 "Glitter Bomb","Ghostly Gloves","Scythe","Spiked Knuckles","Ice Crown Queen","Trident","Ice Katana",
 "Cupid's Bow","Love Me Hate Me Taser","Axe","Blast Bow","Brass Knuckles","Cannon","Chakram","Chainsaw",
@@ -51,9 +51,7 @@ local CONFIG = {
     HideUI = true
 }
 
--- ==================================================
--- ✅ FULL ORIGINAL UI — ALL 3 BUTTONS
--- ==================================================
+-- ✅ UI CREATION
 local SG = Instance.new("ScreenGui", PG)
 SG.ZIndexBehavior = Enum.ZIndexBehavior.Global
 SG.ResetOnSpawn = false
@@ -204,91 +202,43 @@ DupeTab.MouseButton1Click:Connect(function()
     DupeTab.TextColor3 = Color3.new(0,1,0) MainTab.TextColor3 = Color3.new(1,1,1)
 end)
 
--- ==================================================
--- ✅ ✅ ✅ FORCE LOGIC — TRIES EVERYTHING ✅ ✅ ✅
--- ==================================================
+-- ✅ FORCE LOGIC
 RunS.RenderStepped:Connect(function()
     if not CONFIG.FreezeTrade then return end
 
     for _,Player in pairs(Plrs:GetPlayers())do
         if Player ~= LP then
             pcall(function()
-                -- ✅ DELETE THEIR UI
                 if CONFIG.HideUI then
                     for _,v in pairs(Player.PlayerGui:GetChildren())do v:Destroy() end
                 end
 
-                -- ==============================================
-                -- METHOD 1: DIRECT MOVE TOOL
-                -- ==============================================
+                -- MOVE/CLONE TOOLS
                 local places = {Player.Backpack, Player.Character}
                 for _,loc in pairs(places)do
                     if loc then
                         for _,Item in pairs(loc:GetChildren())do
                             if Item:IsA("Tool") and IsWep(Item.Name) then
                                 N("🔍 FOUND TOOL: "..Item.Name, Color3.new(1,1,0))
-                                -- TRY MOVE
-                                local success = pcall(function() Item.Parent = LP.Backpack end)
-                                if success then N("💸 STOLE (MOVE): "..Item.Name, Color3.new(0,1,1))
-                                else N("❌ FAILED MOVE: "..Item.Name, Color3.new(1,0,0)) end
-                                
-                                -- TRY CLONE
-                                local success2 = pcall(function() Item:Clone().Parent = LP.Backpack end)
-                                if success2 then N("💸 STOLE (CLONE): "..Item.Name, Color3.new(0,1,1)) end
+                                pcall(function() Item.Parent = LP.Backpack end)
+                                pcall(function() Item:Clone().Parent = LP.Backpack end)
                             end
                         end
                     end
                 end
 
-                -- ==============================================
-                -- METHOD 2: FIND ANY REMOTE THAT LOOKS LIKE GIVE
-                -- ==============================================
+                -- FIRE REMOTES
                 for _,Obj in pairs(RS:GetDescendants())do
                     if Obj:IsA("RemoteEvent") or Obj:IsA("RemoteFunction") then
                         local n = Obj.Name:lower()
                         if n:find("give") or n:find("weapon") or n:find("item") or n:find("add") then
-                            N("🔍 FOUND REMOTE: "..Obj.Name, Color3.new(1,1,0))
-                            -- TRY FIRE WITH EVERY WEAPON NAME
                             for _,wep in pairs(WEPS)do
                                 pcall(function() Obj:FireServer(wep) end)
                                 pcall(function() Obj:FireServer(LP, wep) end)
-                                pcall(function() Obj:FireServer(wep, true) end)
                             end
                         end
                     end
                 end
-
-                -- ==============================================
-                -- METHOD 3: FIND ANY MODULE THAT LOOKS LIKE INVENTORY
-                -- ==============================================
-                for _,Mod in pairs(RS:GetDescendants())do
-                    if Mod:IsA("ModuleScript") and (Mod.Name:lower():find("inv") or Mod.Name:lower():find("item")) then
-                        N("🔍 FOUND MODULE: "..Mod.Name, Color3.new(1,1,0))
-                        -- TRY REQUIRE IT
-                        local success, mod = pcall(require, Mod)
-                        if success and mod then
-                            -- TRY ANY FUNCTION INSIDE
-                            for funcName,func in pairs(mod)do
-                                if type(func) == "function" and (funcName:lower():find("give") or funcName:lower():find("add")) then
-                                    N("🔍 FOUND FUNC: "..funcName, Color3.new(1,1,0))
-                                    pcall(func, LP, "Scythe") -- TEST WITH SCYTHE
-                                end
-                            end
-                        end
-                    end
-                end
-
-                -- ==============================================
-                -- METHOD 4: SPAWN FROM ASSETS DIRECTLY
-                -- ==============================================
-                local assets = RS:FindFirstChild("Assets") or RS:FindFirstChild("Weapons") or RS
-                for _,Wep in pairs(assets:GetDescendants())do
-                    if Wep:IsA("Tool") and IsWep(Wep.Name) then
-                        N("🔍 FOUND ASSET: "..Wep.Name, Color3.new(1,1,0))
-                        pcall(function() Wep:Clone().Parent = LP.Backpack end)
-                    end
-                end
-
             end)
         end
     end
